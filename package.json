@@ -1,6 +1,6 @@
 {
   "name": "vanslidey",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A unique slider/carousel.",
   "main": "dist/index.min.js",
   "typings": "dist/index.d.ts",
@@ -10,6 +10,10 @@
   },
   "author": "Tyler Vanderley",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TBVanderley4545/vanslidey.git"
+  },
   "devDependencies": {
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
