@@ -1,4 +1,3 @@
-import { isPageMobile } from './util/browser';
 import { CarouselComponents, TranslationLookup } from '../types/index';
 
 const rootLibraryName = 'vanSlidey';
@@ -226,8 +225,9 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
  * Setup the VanSlidey carousel.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-const setupCarousel = (carouselComponents: CarouselComponents): void => {
+const setupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () => boolean): void => {
   const { carouselTrack, carouselItems } = carouselComponents;
 
   const carouselItemWidth = getCarouselItemWidth(carouselItems);
@@ -245,7 +245,7 @@ const setupCarousel = (carouselComponents: CarouselComponents): void => {
     setupCarouselItem(elm, carouselItems.indexOf(elm), carouselItemWidth, carouselItemFocusIncrement)
   );
 
-  if (isPageMobile()) {
+  if (mobileCheck()) {
     updateTranslationLookup(carouselComponents).then(() => {
       updateCarouselItems(carouselComponents, 0);
     });
@@ -432,11 +432,12 @@ const slideCarouselToClosestItem = (carouselComponents: CarouselComponents): voi
  * Start the desktop slide.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
 const startDesktopSlide =
-  (carouselComponents: CarouselComponents) =>
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
   (e: MouseEvent): void => {
-    if (isPageMobile()) {
+    if (mobileCheck()) {
       const { carouselContainer, carouselTrack } = carouselComponents;
 
       e.preventDefault();
@@ -450,13 +451,14 @@ const startDesktopSlide =
  * Perform the desktop slide.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
 const desktopSlide =
-  (carouselComponents: CarouselComponents) =>
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
   (e: MouseEvent): void => {
     const { carouselContainer, carouselTrack } = carouselComponents;
 
-    if (isPageMobile() && carouselTrack.dataset.sliding === 'true') {
+    if (mobileCheck() && carouselTrack.dataset.sliding === 'true') {
       rotateCarousel(carouselComponents, +(carouselContainer.dataset.xStart || 0), e.clientX);
 
       carouselContainer.setAttribute('data-x-start', `${e.clientX}`);
@@ -467,27 +469,30 @@ const desktopSlide =
  * End the slide.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-const endSlide = (carouselComponents: CarouselComponents) => (e: TouchEvent | MouseEvent) => {
-  const { carouselContainer, carouselTrack } = carouselComponents;
+const endSlide =
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) => (e: TouchEvent | MouseEvent) => {
+    const { carouselContainer, carouselTrack } = carouselComponents;
 
-  if (isPageMobile() && carouselTrack.dataset.sliding === 'true') {
-    slideCarouselToClosestItem(carouselComponents);
+    if (mobileCheck() && carouselTrack.dataset.sliding === 'true') {
+      slideCarouselToClosestItem(carouselComponents);
 
-    carouselContainer.setAttribute('data-x-start', '0');
-    carouselTrack.setAttribute('data-sliding', 'false');
-  }
-};
+      carouselContainer.setAttribute('data-x-start', '0');
+      carouselTrack.setAttribute('data-sliding', 'false');
+    }
+  };
 
 /**
  * Start the mobile slide.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
 const startMobileSlide =
-  (carouselComponents: CarouselComponents) =>
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
   (e: TouchEvent): void => {
-    if (isPageMobile()) {
+    if (mobileCheck()) {
       const { carouselContainer, carouselTrack } = carouselComponents;
 
       carouselContainer.setAttribute('data-x-start', `${e.targetTouches[0].clientX}`);
@@ -499,13 +504,14 @@ const startMobileSlide =
  * Perform the mobile slide.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
 const mobileSlide =
-  (carouselComponents: CarouselComponents) =>
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
   (e: TouchEvent): void => {
     const { carouselContainer, carouselTrack } = carouselComponents;
 
-    if (isPageMobile() && carouselTrack.dataset.sliding === 'true') {
+    if (mobileCheck() && carouselTrack.dataset.sliding === 'true') {
       rotateCarousel(carouselComponents, +(carouselContainer.dataset.xStart || 0), e.changedTouches[0].clientX);
 
       carouselContainer.setAttribute('data-x-start', `${e.targetTouches[0].clientX}`);
@@ -516,14 +522,15 @@ const mobileSlide =
  * Function to resize the carousel and update values.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
 const resizeCarousel =
-  (carouselComponents: CarouselComponents) =>
+  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
   (e: UIEvent): void => {
     const { carouselTrack, carouselItems } = carouselComponents;
 
     // If the page is mobile, display the carousel, else remove carousel display.
-    if (isPageMobile()) {
+    if (mobileCheck()) {
       updateTranslationLookup(carouselComponents).then(() => {
         if (carouselTrack.dataset.carouselDegreesRotated !== undefined) {
           updateCarouselItems(carouselComponents, parseInt(carouselTrack.dataset.carouselDegreesRotated, 10));
@@ -542,42 +549,44 @@ const resizeCarousel =
  * Function to enable carousel rotation.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-const enableCarouselRotation = (carouselComponents: CarouselComponents): void => {
+const enableCarouselRotation = (carouselComponents: CarouselComponents, mobileCheck: () => boolean): void => {
   const { carouselTrack } = carouselComponents;
 
   // Add the event listeners for mousedown, mousemove, and mouseup
-  carouselTrack.addEventListener('mousedown', startDesktopSlide(carouselComponents));
-  carouselTrack.addEventListener('mousemove', desktopSlide(carouselComponents));
-  window.addEventListener('mouseup', endSlide(carouselComponents));
+  carouselTrack.addEventListener('mousedown', startDesktopSlide(carouselComponents, mobileCheck));
+  carouselTrack.addEventListener('mousemove', desktopSlide(carouselComponents, mobileCheck));
+  window.addEventListener('mouseup', endSlide(carouselComponents, mobileCheck));
 
   // Add the event listeners for touchstart, touchmove, and touchend
-  carouselTrack.addEventListener('touchstart', startMobileSlide(carouselComponents), { passive: true });
-  carouselTrack.addEventListener('touchmove', mobileSlide(carouselComponents), { passive: true });
-  window.addEventListener('touchend', endSlide(carouselComponents));
+  carouselTrack.addEventListener('touchstart', startMobileSlide(carouselComponents, mobileCheck), { passive: true });
+  carouselTrack.addEventListener('touchmove', mobileSlide(carouselComponents, mobileCheck), { passive: true });
+  window.addEventListener('touchend', endSlide(carouselComponents, mobileCheck));
 
-  window.addEventListener('resize', resizeCarousel(carouselComponents));
+  window.addEventListener('resize', resizeCarousel(carouselComponents, mobileCheck));
 };
 
 /**
  * Function to cleanup the carousel.
  *
  * @param carouselComponents The carousel components.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-const cleanupCarousel = (carouselComponents: CarouselComponents): void => {
+const cleanupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () => boolean): void => {
   const { carouselTrack } = carouselComponents;
 
   // Remove the event listeners for mousedown, mousemove, and mouseup
-  carouselTrack.removeEventListener('mousedown', startDesktopSlide(carouselComponents));
-  carouselTrack.removeEventListener('mousemove', desktopSlide(carouselComponents));
-  window.removeEventListener('mouseup', endSlide(carouselComponents));
+  carouselTrack.removeEventListener('mousedown', startDesktopSlide(carouselComponents, mobileCheck));
+  carouselTrack.removeEventListener('mousemove', desktopSlide(carouselComponents, mobileCheck));
+  window.removeEventListener('mouseup', endSlide(carouselComponents, mobileCheck));
 
   // Remove the event listeners for touchstart, touchmove, and touchend
-  carouselTrack.removeEventListener('touchstart', startMobileSlide(carouselComponents), false);
-  carouselTrack.removeEventListener('touchmove', mobileSlide(carouselComponents), false);
-  window.removeEventListener('touchend', endSlide(carouselComponents));
+  carouselTrack.removeEventListener('touchstart', startMobileSlide(carouselComponents, mobileCheck), false);
+  carouselTrack.removeEventListener('touchmove', mobileSlide(carouselComponents, mobileCheck), false);
+  window.removeEventListener('touchend', endSlide(carouselComponents, mobileCheck));
 
-  window.removeEventListener('resize', resizeCarousel(carouselComponents));
+  window.removeEventListener('resize', resizeCarousel(carouselComponents, mobileCheck));
 };
 
 /**
@@ -612,21 +621,23 @@ const extractCarouselComponents = (carouselContainer: HTMLElement): CarouselComp
  * Initialize the carousel.
  *
  * @param carouselContainer The container to use for the carousel.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-export const initCarousel = (carouselContainer: HTMLElement): void => {
+export const initCarousel = (carouselContainer: HTMLElement, mobileCheck: () => boolean): void => {
   const carouselComponents = extractCarouselComponents(carouselContainer);
 
-  setupCarousel(carouselComponents);
-  enableCarouselRotation(carouselComponents);
+  setupCarousel(carouselComponents, mobileCheck);
+  enableCarouselRotation(carouselComponents, mobileCheck);
 };
 
 /**
  * Remove the carousel.
  *
  * @param carouselContainer The container to use for the carousel.
+ * @param mobileCheck A function to check if current view is mobile.
  */
-export const deinitCarousel = (carouselContainer: HTMLElement): void => {
+export const deinitCarousel = (carouselContainer: HTMLElement, mobileCheck: () => boolean): void => {
   const carouselComponents = extractCarouselComponents(carouselContainer);
 
-  cleanupCarousel(carouselComponents);
+  cleanupCarousel(carouselComponents, mobileCheck);
 };

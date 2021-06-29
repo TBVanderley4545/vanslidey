@@ -1,6 +1,6 @@
 {
   "name": "vanslidey",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A unique slider/carousel.",
   "main": "dist/index.min.js",
   "typings": "dist/index.d.ts",
