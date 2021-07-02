@@ -1,0 +1,19 @@
+@mixin vanslidey-carousel-item-wrapper {
+  position: relative;
+}
+
+@mixin vanslidey-carousel-item {
+  cursor: pointer;
+  position: absolute;
+  user-select: none;
+  z-index: 1;
+}
+
+@mixin vanslidey-carousel-item--larger {
+  position: relative;
+  transition: transform 250ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}

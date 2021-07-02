@@ -1,0 +1,13 @@
+@mixin vanslidey-carousel-track {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 70vw;
+  justify-content: center;
+  position: relative;
+}
+
+@mixin vanslidey-carousel-track--larger {
+  height: auto;
+  margin: 3em 0 1em;
+}

@@ -1,6 +1,6 @@
 import { CarouselComponents, TranslationLookup } from '../types/index';
 
-const rootLibraryName = 'vanSlidey';
+const rootLibraryName = 'vanslidey';
 const carouselTrackClassName = `${rootLibraryName}__carousel-track`;
 const carouselIndicatorClassName = `${rootLibraryName}__carousel-indicator`;
 const carouselItemClassName = `${rootLibraryName}__carousel-item`;
@@ -238,7 +238,7 @@ const setupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () =
   carouselTrack.setAttribute('data-sliding', 'false');
 
   // Make the first carousel item the active one.
-  carouselItems[0].classList.add('vanSlidey__carousel-item--active');
+  carouselItems[0].classList.add(`${carouselItemClassName}--active`);
   carouselItems[0].style.zIndex = '2';
 
   carouselItems.forEach(elm =>
