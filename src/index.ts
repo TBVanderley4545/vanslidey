@@ -24,7 +24,8 @@ const setupCarouselItem = (item: HTMLElement, itemIndex: number, itemWidth: numb
  * @param carouselItems An array of carousel items.
  * @returns The percentage of each carousel item's width.
  */
-export const getCarouselItemWidth = (carouselItems: Array<HTMLElement>): number => 100 / carouselItems.length;
+export const getCarouselItemWidth = (carouselItems: Array<HTMLElement>): number =>
+  carouselItems.length > 0 ? 100 / carouselItems.length : 0;
 
 /**
  * Get the number of degrees between each carousel item.

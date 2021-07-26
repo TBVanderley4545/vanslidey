@@ -44,12 +44,10 @@ export const generateCarouselIndicatorSection = (carouselItemCount: number): Ele
 /**
  * Generate a carousel.
  *
+ * @param carouselId Id to use for the carousel.
  * @param carouselItems The carousel items to use in the carousel.
+ *
  * @returns A complete carousel element.
  */
-export const generateCarousel = (carouselItems: Array<Element>): Element =>
-  h(
-    'div#carousel-container',
-    generateCarouselTrack(carouselItems),
-    generateCarouselIndicatorSection(carouselItems.length)
-  );
+export const generateCarousel = (carouselId: string, carouselItems: Array<Element>): Element =>
+  h(`div#${carouselId}`, generateCarouselTrack(carouselItems), generateCarouselIndicatorSection(carouselItems.length));
