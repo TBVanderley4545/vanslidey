@@ -1,12 +1,7 @@
-import { CarouselComponents, TranslationLookup } from '../types/index';
-
-const rootLibraryName = 'vanslidey';
-const carouselTrackClassName = `${rootLibraryName}__carousel-track`;
-const carouselIndicatorClassName = `${rootLibraryName}__carousel-indicator`;
-const carouselItemClassName = `${rootLibraryName}__carousel-item`;
-
-const maxScale: number = 1.5;
-const minScale: number = 0.75;
+import { MAX_SCALE, MIN_SCALE } from 'shared/constants';
+import { carouselIndicatorClassName, carouselItemClassName, carouselTrackClassName } from 'shared/selectors';
+import { CarouselComponents } from 'types/carousel-components';
+import { TranslationLookup } from 'types/translation-lookup';
 
 /**
  * Setup each individual carousel item.
@@ -17,8 +12,10 @@ const minScale: number = 0.75;
  * @param focusIncrement The increment of degrees to show focus for.
  */
 const setupCarouselItem = (item: HTMLElement, itemIndex: number, itemWidth: number, focusIncrement: number): void => {
-  item.style.width = `${itemWidth}`;
-  item.setAttribute('data-rotation-degree-with-focus', `${itemIndex * focusIncrement}`);
+  const itemRef = item;
+
+  itemRef.style.width = `${itemWidth}`;
+  itemRef.setAttribute('data-rotation-degree-with-focus', `${itemIndex * focusIncrement}`);
 };
 
 /**
@@ -27,7 +24,7 @@ const setupCarouselItem = (item: HTMLElement, itemIndex: number, itemWidth: numb
  * @param carouselItems An array of carousel items.
  * @returns The percentage of each carousel item's width.
  */
-const getCarouselItemWidth = (carouselItems: Array<HTMLElement>): number => 100 / carouselItems.length;
+export const getCarouselItemWidth = (carouselItems: Array<HTMLElement>): number => 100 / carouselItems.length;
 
 /**
  * Get the number of degrees between each carousel item.
@@ -105,6 +102,7 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
   const { carouselContainer, carouselItems, carouselIndicators } = carouselComponents;
 
   carouselItems.forEach(elm => {
+    const elmRef = elm;
     let currentRotationPosition;
 
     if (elm.dataset.rotationDegreeWithFocus !== undefined) {
@@ -136,28 +134,28 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
     let currentGrayscale;
 
     if (absValPercentageRotated >= 0.85 || absValPercentageRotated <= 0.15) {
-      elm.classList.add(`${carouselItemClassName}--active`);
-      elm.style.zIndex = '2';
-      if (elm.dataset.carouselIndex !== undefined) {
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].classList.add(
+      elmRef.classList.add(`${carouselItemClassName}--active`);
+      elmRef.style.zIndex = '2';
+      if (elmRef.dataset.carouselIndex !== undefined) {
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].classList.add(
           `${carouselIndicatorClassName}--active`
         );
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].style.opacity = '1';
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].style.transform = 'scale(1.5)';
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].style.opacity = '1';
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].style.transform = 'scale(1.5)';
       } else {
         carouselIndicators[0].classList.add(`${carouselIndicatorClassName}--active`);
         carouselIndicators[0].style.opacity = '1';
         carouselIndicators[0].style.transform = 'scale(1.5)';
       }
     } else {
-      elm.classList.remove(`${carouselItemClassName}--active`);
-      elm.style.zIndex = '';
-      if (elm.dataset.carouselIndex !== undefined) {
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].classList.remove(
+      elmRef.classList.remove(`${carouselItemClassName}--active`);
+      elmRef.style.zIndex = '';
+      if (elmRef.dataset.carouselIndex !== undefined) {
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].classList.remove(
           `${carouselIndicatorClassName}--active`
         );
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].style.opacity = '';
-        carouselIndicators[parseInt(elm.dataset.carouselIndex, 10)].style.transform = '';
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].style.opacity = '';
+        carouselIndicators[parseInt(elmRef.dataset.carouselIndex, 10)].style.transform = '';
       } else {
         carouselIndicators[0].classList.remove(`${carouselIndicatorClassName}--active`);
         carouselIndicators[0].style.opacity = '';
@@ -175,7 +173,7 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
       currentXTranslation = -inverter * extremeHorizontalTranslation * Math.sqrt(quadrantPercentage);
       currentYTranslation =
         extremeVerticalBottomTranslation - extremeVerticalBottomTranslation * 2 * Math.sqrt(quadrantPercentage);
-      currentScale = maxScale - (maxScale - 1) * Math.sqrt(quadrantPercentage);
+      currentScale = MAX_SCALE - (MAX_SCALE - 1) * Math.sqrt(quadrantPercentage);
       currentGrayscale = 100 * Math.sqrt(quadrantPercentage);
     } else if (absValPercentageRotated > 0.25 && absValPercentageRotated <= 0.5) {
       /*
@@ -187,7 +185,7 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
       currentXTranslation = -inverter * extremeHorizontalTranslation * Math.sqrt(quadrantPercentage);
       currentYTranslation =
         extremeVerticalTopTranslation + extremeVerticalBottomTranslation * Math.sqrt(quadrantPercentage);
-      currentScale = minScale + (1 - minScale) * Math.sqrt(quadrantPercentage);
+      currentScale = MIN_SCALE + (1 - MIN_SCALE) * Math.sqrt(quadrantPercentage);
       currentGrayscale = 100;
     } else if (absValPercentageRotated > 0.5 && absValPercentageRotated <= 0.75) {
       /*
@@ -199,7 +197,7 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
       currentXTranslation = inverter * extremeHorizontalTranslation * Math.sqrt(quadrantPercentage);
       currentYTranslation =
         extremeVerticalBottomTranslation * Math.sqrt(quadrantPercentage) + extremeVerticalTopTranslation;
-      currentScale = minScale + (1 - minScale) * Math.sqrt(quadrantPercentage);
+      currentScale = MIN_SCALE + (1 - MIN_SCALE) * Math.sqrt(quadrantPercentage);
       currentGrayscale = 100;
     } else {
       /*
@@ -211,13 +209,13 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
       currentXTranslation = inverter * extremeHorizontalTranslation * Math.sqrt(quadrantPercentage);
       currentYTranslation =
         -(extremeVerticalBottomTranslation * 2 * Math.sqrt(quadrantPercentage)) + extremeVerticalBottomTranslation;
-      currentScale = maxScale - (maxScale - 1) * Math.sqrt(quadrantPercentage);
+      currentScale = MAX_SCALE - (MAX_SCALE - 1) * Math.sqrt(quadrantPercentage);
       currentGrayscale = 100 * Math.sqrt(quadrantPercentage);
     }
 
     // Transform carousel items.
-    elm.style.transform = `translate3d(${currentXTranslation}px, ${currentYTranslation}px, 0px) scale(${currentScale})`;
-    elm.style.filter = `grayscale(${currentGrayscale}%)`;
+    elmRef.style.transform = `translate3d(${currentXTranslation}px, ${currentYTranslation}px, 0px) scale(${currentScale})`;
+    elmRef.style.filter = `grayscale(${currentGrayscale}%)`;
   });
 };
 
@@ -258,7 +256,7 @@ const setupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () =
 };
 
 /**
- * Function to rotate carousel
+ * Rotate carousel
  *
  * @param carouselComponents The carousel components.
  * @param startX
@@ -297,7 +295,7 @@ const rotateCarousel = (carouselComponents: CarouselComponents, startX: number, 
 };
 
 /**
- * Function to find the closes carousel item.
+ * Find the closes carousel item.
  *
  * @param  currentRotationPosition The total amount the carousel is currently rotated.
  * @param carouselItems An array of carousel items.
@@ -358,7 +356,7 @@ const findClosestCarouselItem = (currentRotationPosition: number, carouselItems:
 };
 
 /**
- * Function to slide the carousel to the closest item.
+ * Slide the carousel to the closest item.
  *
  * @param carouselComponents The carousel components.
  */
@@ -471,17 +469,16 @@ const desktopSlide =
  * @param carouselComponents The carousel components.
  * @param mobileCheck A function to check if current view is mobile.
  */
-const endSlide =
-  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) => (e: TouchEvent | MouseEvent) => {
-    const { carouselContainer, carouselTrack } = carouselComponents;
+const endSlide = (carouselComponents: CarouselComponents, mobileCheck: () => boolean) => () => {
+  const { carouselContainer, carouselTrack } = carouselComponents;
 
-    if (mobileCheck() && carouselTrack.dataset.sliding === 'true') {
-      slideCarouselToClosestItem(carouselComponents);
+  if (mobileCheck() && carouselTrack.dataset.sliding === 'true') {
+    slideCarouselToClosestItem(carouselComponents);
 
-      carouselContainer.setAttribute('data-x-start', '0');
-      carouselTrack.setAttribute('data-sliding', 'false');
-    }
-  };
+    carouselContainer.setAttribute('data-x-start', '0');
+    carouselTrack.setAttribute('data-sliding', 'false');
+  }
+};
 
 /**
  * Start the mobile slide.
@@ -519,34 +516,32 @@ const mobileSlide =
   };
 
 /**
- * Function to resize the carousel and update values.
+ * Resize the carousel and update values.
  *
  * @param carouselComponents The carousel components.
  * @param mobileCheck A function to check if current view is mobile.
  */
-const resizeCarousel =
-  (carouselComponents: CarouselComponents, mobileCheck: () => boolean) =>
-  (e: UIEvent): void => {
-    const { carouselTrack, carouselItems } = carouselComponents;
+const resizeCarousel = (carouselComponents: CarouselComponents, mobileCheck: () => boolean) => (): void => {
+  const { carouselTrack, carouselItems } = carouselComponents;
 
-    // If the page is mobile, display the carousel, else remove carousel display.
-    if (mobileCheck()) {
-      updateTranslationLookup(carouselComponents).then(() => {
-        if (carouselTrack.dataset.carouselDegreesRotated !== undefined) {
-          updateCarouselItems(carouselComponents, parseInt(carouselTrack.dataset.carouselDegreesRotated, 10));
-        }
-      });
-    } else {
-      carouselItems.forEach(elm => {
-        const carouselItem = elm;
-        carouselItem.style.transform = '';
-        carouselItem.style.filter = '';
-      });
-    }
-  };
+  // If the page is mobile, display the carousel, else remove carousel display.
+  if (mobileCheck()) {
+    updateTranslationLookup(carouselComponents).then(() => {
+      if (carouselTrack.dataset.carouselDegreesRotated !== undefined) {
+        updateCarouselItems(carouselComponents, parseInt(carouselTrack.dataset.carouselDegreesRotated, 10));
+      }
+    });
+  } else {
+    carouselItems.forEach(elm => {
+      const carouselItem = elm;
+      carouselItem.style.transform = '';
+      carouselItem.style.filter = '';
+    });
+  }
+};
 
 /**
- * Function to enable carousel rotation.
+ * Enable carousel rotation.
  *
  * @param carouselComponents The carousel components.
  * @param mobileCheck A function to check if current view is mobile.
@@ -560,15 +555,19 @@ const enableCarouselRotation = (carouselComponents: CarouselComponents, mobileCh
   window.addEventListener('mouseup', endSlide(carouselComponents, mobileCheck));
 
   // Add the event listeners for touchstart, touchmove, and touchend
-  carouselTrack.addEventListener('touchstart', startMobileSlide(carouselComponents, mobileCheck), { passive: true });
-  carouselTrack.addEventListener('touchmove', mobileSlide(carouselComponents, mobileCheck), { passive: true });
+  carouselTrack.addEventListener('touchstart', startMobileSlide(carouselComponents, mobileCheck), {
+    passive: true,
+  });
+  carouselTrack.addEventListener('touchmove', mobileSlide(carouselComponents, mobileCheck), {
+    passive: true,
+  });
   window.addEventListener('touchend', endSlide(carouselComponents, mobileCheck));
 
   window.addEventListener('resize', resizeCarousel(carouselComponents, mobileCheck));
 };
 
 /**
- * Function to cleanup the carousel.
+ * Cleanup the carousel.
  *
  * @param carouselComponents The carousel components.
  * @param mobileCheck A function to check if current view is mobile.
@@ -590,12 +589,12 @@ const cleanupCarousel = (carouselComponents: CarouselComponents, mobileCheck: ()
 };
 
 /**
- * Function to extract relevant carousel components.
+ * Extract relevant carousel components.
  *
  * @param carouselContainer The container to use for the carousel.
  * @returns
  */
-const extractCarouselComponents = (carouselContainer: HTMLElement): CarouselComponents => {
+export const extractCarouselComponents = (carouselContainer: HTMLElement): CarouselComponents => {
   const [carouselTrackElm] = carouselContainer.getElementsByClassName(
     carouselTrackClassName
   ) as HTMLCollectionOf<HTMLElement>;
@@ -610,7 +609,7 @@ const extractCarouselComponents = (carouselContainer: HTMLElement): CarouselComp
   const arrayOfCarouselIndicators = Array.from(carouselIndicatorElms);
 
   return {
-    carouselContainer: carouselContainer,
+    carouselContainer,
     carouselTrack: carouselTrackElm,
     carouselItems: arrayOfCarouselItems,
     carouselIndicators: arrayOfCarouselIndicators,
