@@ -38,7 +38,8 @@ export const getCarouselItemWidth = (carouselItems: Array<HTMLElement>): number 
  * @param carouselItems An array of carousel items.
  * @returns The number of degrees for each focus increment between carousel items.
  */
-const getCarouselItemFocusIncrement = (carouselItems: Array<HTMLElement>): number => 360 / carouselItems.length;
+export const getCarouselItemFocusIncrement = (carouselItems: Array<HTMLElement>): number =>
+  carouselItems.length > 0 ? 360 / carouselItems.length : 0;
 
 /**
  * Set the extreme translations of the carousel container.
@@ -48,7 +49,7 @@ const getCarouselItemFocusIncrement = (carouselItems: Array<HTMLElement>): numbe
  * @param verticalTop The extreme top vertical translation limit.
  * @param verticalBottom The extreme bottom vertical translation limit.
  */
-const setExtremeTranslations = (
+export const setExtremeTranslations = (
   carouselContainer: HTMLElement,
   horizontal: number,
   verticalTop: number,
