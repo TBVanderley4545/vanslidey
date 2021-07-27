@@ -47,7 +47,7 @@ describe('getCarouselItemWidth()', () => {
     expect(calculatedCarouselItemWidth).toBe(carouselItemExpectedWidth);
   });
 
-  test('It should return 0 if the carousel items passed is 0', () => {
+  test('It should return 0 if the array of carousel items passed is contains no items.', () => {
     // Arrange
     const carouselItemExpectedWidth: number = 0;
     const emptyCarouselItems: Array<HTMLElement> = [];
