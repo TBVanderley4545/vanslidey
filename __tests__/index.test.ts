@@ -5,12 +5,13 @@ import { mapArrayOfFunctionCalls } from './helpers/general-helpers';
 describe('setupCarouselItem()', () => {
   const expectedDataAttribute = 'data-rotation-degree-with-focus';
   let carouselItem: HTMLElement;
+  let itemIndex: number;
   let itemWidth: number;
   let focusIncrement: number;
 
   beforeEach(() => {
     const numberOfItems = 5;
-    const itemIndex = 4;
+    itemIndex = 4;
     focusIncrement = 360 / numberOfItems;
     [carouselItem] = mapArrayOfFunctionCalls<HTMLElement>(generateCarouselItems(1));
     itemWidth = 100 / numberOfItems;
@@ -18,16 +19,16 @@ describe('setupCarouselItem()', () => {
     setupCarouselItem(carouselItem, itemIndex, itemWidth, focusIncrement);
   });
 
-  test('It should set a data attribute called data-rotation-degree-with-focus to the focus increment passed in.', () => {
+  test('It should set a data attribute called data-rotation-degree-with-focus to the focus increment passed in times the index.', () => {
     // Assert
     expect(carouselItem.hasAttribute(expectedDataAttribute)).toBe(true);
-    expect(carouselItem.getAttribute(expectedDataAttribute)).toEqual(focusIncrement);
+    expect(carouselItem.getAttribute(expectedDataAttribute)).toEqual(`${focusIncrement * itemIndex}`);
   });
 
   test('It should set the item width to the item width passed in.', () => {
     // Assert
-    expect(carouselItem.clientWidth).toBeDefined();
-    expect(carouselItem.clientWidth).toEqual(itemWidth);
+    expect(carouselItem.style.width).toBeDefined();
+    expect(carouselItem.style.width).toEqual(`${itemWidth}px`);
   });
 });
 

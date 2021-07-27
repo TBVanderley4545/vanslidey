@@ -19,7 +19,7 @@ export const setupCarouselItem = (
 ): void => {
   const itemRef = item;
 
-  itemRef.style.width = `${itemWidth}`;
+  itemRef.style.width = `${itemWidth}px`;
   itemRef.setAttribute('data-rotation-degree-with-focus', `${itemIndex * focusIncrement}`);
 };
 
