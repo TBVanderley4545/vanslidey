@@ -11,7 +11,12 @@ import { TranslationLookup } from 'types/translation-lookup';
  * @param itemWidth The width of each carousel item.
  * @param focusIncrement The increment of degrees to show focus for.
  */
-const setupCarouselItem = (item: HTMLElement, itemIndex: number, itemWidth: number, focusIncrement: number): void => {
+export const setupCarouselItem = (
+  item: HTMLElement,
+  itemIndex: number,
+  itemWidth: number,
+  focusIncrement: number
+): void => {
   const itemRef = item;
 
   itemRef.style.width = `${itemWidth}`;
