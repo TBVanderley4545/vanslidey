@@ -1,5 +1,11 @@
 import h from 'hyperscript';
-import { getCarouselItemFocusIncrement, getCarouselItemWidth, setExtremeTranslations, setupCarouselItem } from 'index';
+import {
+  getCarouselItemFocusIncrement,
+  getCarouselItemWidth,
+  getExtremeTranslations,
+  setExtremeTranslations,
+  setupCarouselItem,
+} from 'index';
 import { generateCarouselItems } from './helpers/document-helpers';
 import { mapArrayOfFunctionCalls } from './helpers/general-helpers';
 
@@ -125,5 +131,68 @@ describe('setExtremeTranslations()', () => {
     // Assert
     expect(carouselContainer.hasAttribute(testedAttribute)).toBe(true);
     expect(carouselContainer.getAttribute(testedAttribute)).toEqual(`${verticalBottom}`);
+  });
+});
+
+describe('getExtremeTranslations()', () => {
+  let carouselContainer: HTMLElement;
+  let carouselContainerWithoutAttributes: HTMLElement;
+
+  beforeEach(() => {
+    carouselContainer = h('div', {
+      'data-extreme-horizontal-translation': 100,
+      'data-extreme-vertical-top-translation': 100,
+      'data-extreme-vertical-bottom-translation': 100,
+    });
+
+    carouselContainerWithoutAttributes = h('div');
+  });
+
+  test('It should return 0 if data-extreme-horizontal-translation is not set on the element.', () => {
+    // Act
+    const horizontalTranslation = getExtremeTranslations(carouselContainerWithoutAttributes).horizontal;
+
+    // Assert
+    expect(horizontalTranslation).toBe(0);
+  });
+
+  test('It should return 0 if data-extreme-vertical-top-translation is not set on the element.', () => {
+    // Act
+    const verticalTopTranslation = getExtremeTranslations(carouselContainerWithoutAttributes).verticalTop;
+
+    // Assert
+    expect(verticalTopTranslation).toBe(0);
+  });
+
+  test('It should return 0 if data-extreme-vertical-bottom-translation is not set on the element.', () => {
+    // Act
+    const verticalBottomTranslation = getExtremeTranslations(carouselContainerWithoutAttributes).verticalBottom;
+
+    // Assert
+    expect(verticalBottomTranslation).toBe(0);
+  });
+
+  test('It should return the value of data-extreme-horizontal-translation if it exists on the element', () => {
+    // Act
+    const horizontalTranslation = getExtremeTranslations(carouselContainer).horizontal;
+
+    // Assert
+    expect(horizontalTranslation).toBe(100);
+  });
+
+  test('It should return the value of data-extreme-vertical-top-translation if it exists on the element', () => {
+    // Act
+    const verticalTopTranslation = getExtremeTranslations(carouselContainer).verticalTop;
+
+    // Assert
+    expect(verticalTopTranslation).toBe(100);
+  });
+
+  test('It should return the value of data-extreme-vertical-bottom-translation if it exists on the element', () => {
+    // Act
+    const verticalBottomTranslation = getExtremeTranslations(carouselContainer).verticalBottom;
+
+    // Assert
+    expect(verticalBottomTranslation).toBe(100);
   });
 });

@@ -65,7 +65,7 @@ export const setExtremeTranslations = (
  *
  * @param carouselContainer The container to use for the carousel.
  */
-const getExtremeTranslations = (carouselContainer: HTMLElement): TranslationLookup => ({
+export const getExtremeTranslations = (carouselContainer: HTMLElement): TranslationLookup => ({
   horizontal: +(carouselContainer.dataset.extremeHorizontalTranslation || 0),
   verticalTop: +(carouselContainer.dataset.extremeVerticalTopTranslation || 0),
   verticalBottom: +(carouselContainer.dataset.extremeVerticalBottomTranslation || 0),
