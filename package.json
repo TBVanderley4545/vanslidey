@@ -1,12 +1,13 @@
 {
   "name": "vanslidey",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A unique slider/carousel.",
   "main": "dist/index.min.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "lint": "eslint \"./**/*.[j|t]s\" --ignore-pattern node_modules/ --ignore-pattern dist/",
+    "build": "rollup -c",
+    "unit": "jest"
   },
   "author": "Tyler Vanderley",
   "license": "MIT",
@@ -15,10 +16,23 @@
     "url": "https://github.com/TBVanderley4545/vanslidey.git"
   },
   "devDependencies": {
-    "eslint": "^7.29.0",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/hyperscript": "^0.0.4",
+    "@types/jest": "^26.0.24",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "babel-jest": "^27.0.6",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "fs-extra": "^8.1.0",
+    "hyperscript": "^2.0.2",
+    "jest": "^27.0.6",
     "prettier": "^2.3.1",
     "rollup": "^2.52.2",
     "rollup-plugin-copy": "^3.4.0",
