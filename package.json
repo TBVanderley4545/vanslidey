@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint \"./**/*.[j|t]s\" --ignore-pattern node_modules/ --ignore-pattern dist/",
     "build": "rollup -c",
-    "unit": "jest"
+    "test": "jest"
   },
   "author": "Tyler Vanderley",
   "license": "MIT",
