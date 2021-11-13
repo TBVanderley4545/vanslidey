@@ -1,13 +1,13 @@
 {
   "name": "vanslidey",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "A unique slider/carousel.",
   "main": "dist/index.min.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint \"./**/*.[j|t]s\" --ignore-pattern node_modules/ --ignore-pattern dist/",
     "build": "rollup -c",
-    "unit": "jest"
+    "test": "jest"
   },
   "author": "Tyler Vanderley",
   "license": "MIT",
