@@ -8,18 +8,11 @@ import { TranslationLookup } from 'types/translation-lookup';
  *
  * @param item The carousel item to setup.
  * @param itemIndex The index of the carousel item.
- * @param itemWidth The width of each carousel item.
  * @param focusIncrement The increment of degrees to show focus for.
  */
-export const setupCarouselItem = (
-  item: HTMLElement,
-  itemIndex: number,
-  itemWidth: number,
-  focusIncrement: number
-): void => {
+export const setupCarouselItem = (item: HTMLElement, itemIndex: number, focusIncrement: number): void => {
   const itemRef = item;
 
-  itemRef.style.width = `${itemWidth}px`;
   itemRef.setAttribute('data-rotation-degree-with-focus', `${itemIndex * focusIncrement}`);
 };
 
@@ -235,7 +228,6 @@ const updateCarouselItems = (carouselComponents: CarouselComponents, currentCaro
 const setupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () => boolean): void => {
   const { carouselTrack, carouselItems } = carouselComponents;
 
-  const carouselItemWidth = getCarouselItemWidth(carouselItems);
   const carouselItemFocusIncrement = getCarouselItemFocusIncrement(carouselItems);
 
   // Initialize the track with no rotation and not rotating.
@@ -246,9 +238,7 @@ const setupCarousel = (carouselComponents: CarouselComponents, mobileCheck: () =
   carouselItems[0].classList.add(`${carouselItemClassName}--active`);
   carouselItems[0].style.zIndex = '2';
 
-  carouselItems.forEach(elm =>
-    setupCarouselItem(elm, carouselItems.indexOf(elm), carouselItemWidth, carouselItemFocusIncrement)
-  );
+  carouselItems.forEach(elm => setupCarouselItem(elm, carouselItems.indexOf(elm), carouselItemFocusIncrement));
 
   if (mobileCheck()) {
     updateTranslationLookup(carouselComponents).then(() => {
