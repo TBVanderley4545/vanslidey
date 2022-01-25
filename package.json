@@ -1,9 +1,9 @@
 {
   "name": "vanslidey",
-  "version": "3.0.10",
+  "version": "3.1.0",
   "description": "A unique slider/carousel.",
   "main": "dist/index.min.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
     "lint": "eslint \"./**/*.[j|t]s\" --ignore-pattern node_modules/ --ignore-pattern dist/",
     "build": "rollup -c",
