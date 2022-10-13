@@ -1,5 +1,5 @@
 import h from 'hyperscript';
-import { carouselIndicatorClassName, carouselItemClassName, carouselTrackClassName } from 'shared/selectors';
+import { carouselIndicatorClassName, carouselItemClassName, carouselTrackClassName } from '../../src/shared/selectors';
 import { mapArrayOfFunctionCalls, repeat } from './general-helpers';
 
 /**

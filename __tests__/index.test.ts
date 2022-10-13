@@ -5,7 +5,7 @@ import {
   getExtremeTranslations,
   setExtremeTranslations,
   setupCarouselItem,
-} from 'vanslidey';
+} from '../src/vanslidey';
 import { generateCarouselItems } from './helpers/document-helpers';
 import { mapArrayOfFunctionCalls } from './helpers/general-helpers';
 
