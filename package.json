@@ -6,7 +6,7 @@
     "/dist"
   ],
   "main": "dist/index.min.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint \"./**/*.[j|t]s\" --ignore-pattern node_modules/ --ignore-pattern dist/",
     "build": "rollup -c",
