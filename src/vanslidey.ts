@@ -1,7 +1,7 @@
-import { MAX_SCALE, MIN_SCALE } from 'shared/constants';
-import { carouselIndicatorClassName, carouselItemClassName, carouselTrackClassName } from 'shared/selectors';
-import { CarouselComponents } from 'types/carousel-components';
-import { TranslationLookup } from 'types/translation-lookup';
+import { MAX_SCALE, MIN_SCALE } from './shared/constants';
+import { carouselIndicatorClassName, carouselItemClassName, carouselTrackClassName } from './shared/selectors';
+import { CarouselComponents } from './types/carousel-components';
+import { TranslationLookup } from './types/translation-lookup';
 
 /**
  * Setup each individual carousel item.

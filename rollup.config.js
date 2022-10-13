@@ -1,4 +1,4 @@
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 import copy from 'rollup-plugin-copy';
 import fse from 'fs-extra';
@@ -29,6 +29,7 @@ export default {
   plugins: [
     typescript({
       tsconfig: './tsconfig.json',
+      exclude: ['__tests__/**/*'],
     }),
     copy({
       targets: [{ src: './src/style/**/*', dest: `${outputDirectory}/style` }],
